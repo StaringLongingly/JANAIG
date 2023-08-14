@@ -852,7 +852,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dde2f56e0db3a644a2e20b1af6ca5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFrozen: 1
+  rb: {fileID: 948331571}
+  positivex: 1
+  startthrow: 0
+  SPScalar: 1
+  HPScalar: 1
+  CurrentSP: 1
+  CurrentHP: 1
   FrozenTime: 1
 --- !u!135 &948331573
 SphereCollider:
@@ -2188,7 +2194,15 @@ MonoBehaviour:
   - {fileID: 983387055}
   - {fileID: 492098155}
   - {fileID: 3985855}
-  SelectedWeapon: 2
+  selectedWeapon: 2
+  daggerHP: 100
+  daggerSP: 25
+  katanaHP: 50
+  katanaSP: 75
+  longswordHP: 75
+  longswordSP: 50
+  greatswordHP: 25
+  greatswordSP: 100
 --- !u!1 &1831077371
 GameObject:
   m_ObjectHideFlags: 0
@@ -2854,7 +2868,15 @@ MonoBehaviour:
   - {fileID: 607746482}
   - {fileID: 524625837}
   - {fileID: 2031267855}
-  SelectedWeapon: 0
+  selectedWeapon: 0
+  daggerHP: 100
+  daggerSP: 25
+  katanaHP: 50
+  katanaSP: 75
+  longswordHP: 75
+  longswordSP: 50
+  greatswordHP: 25
+  greatswordSP: 100
 --- !u!1001 &2031267853
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
-{
-    public float CurrentSP { get; private set; }
-    public float CurrentHP { get; private set; }
+{   
+    public Rigidbody rb;
+    public bool positivex = true;
+    
+    public bool startthrow = false; void Update() { if (startthrow) { startthrow = false; Throw(); } }
+
+    public float SPScalar = 2f;
+    public float HPScalar = 1f;
+
+    public float CurrentSP = 1f;
+    public float CurrentHP = 1f;
 
     public bool IsFrozen { get; private set; } = true;
     public float FrozenTime = 1.0f;
@@ -51,7 +59,16 @@ public class Bullet : MonoBehaviour
 
     private void Throw()
     {
-        Debug.Log("Throw!");
+        rb.velocity = Vector3.zero;
+        positivex = !positivex;
+        Vector3 direction = new Vector3
+        (
+            positivex ? 1 : -1, // X component between -1 and 1
+            Random.Range(0, 0.5f), // Y component between -1 and 1
+            Random.Range(-4f, 4f)  // Z component between -1 and 1
+        );
+        rb.AddForce(direction * CurrentSP * SPScalar, ForceMode.Acceleration);
+        Debug.Log("Throw to " + direction);
     }
 
     private string GetParentName(Collider other)
