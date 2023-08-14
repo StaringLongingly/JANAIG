@@ -1,40 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class weaponselector : MonoBehaviour
+public class WeaponSelector : MonoBehaviour
 {
-    public GameObject[] objectsArray;
-    public int SelectedWeapon = 0;
+    [SerializeField] private GameObject[] objectsArray;
+    [SerializeField] private int selectedWeapon = 0;
 
-    public float HP = 0f;
-    public float SP = 0f;
+    [SerializeField] private float daggerHP = 100f;
+    [SerializeField] private float daggerSP = 25f;
 
-    public float DaggerHP = 100f;
-    public float DaggerSP = 25f;
+    [SerializeField] private float katanaHP = 50f;
+    [SerializeField] private float katanaSP = 75f;
 
-    public float KatanaHP = 50f;
-    public float KatanaSP = 75f;
+    [SerializeField] private float longswordHP = 75f;
+    [SerializeField] private float longswordSP = 50f;
 
-    public float LongswordHP = 75f;
-    public float LongswordSP = 50f;
+    [SerializeField] private float greatswordHP = 25f;
+    [SerializeField] private float greatswordSP = 100f;
 
-    public float GreatswordHP = 25f;
-    public float GreatswordSP = 100f;
+    public float HitHP { get; private set; }
+    public float HitSP { get; private set; }
 
-    void Start()
+    private void Start()
     {
-        objectsArray[SelectedWeapon].SetActive(true);
-        switch (SelectedWeapon)
-        {   
-            // dagger
-            case 0: HP = DaggerHP; SP = DaggerSP; break;
-            // katana
-            case 1: HP = KatanaHP; SP = KatanaSP; break;
-            // Longsword
-            case 2: HP = LongswordHP; SP = LongswordSP; break;
-            // Greatsword
-            case 3: HP = GreatswordHP; SP = GreatswordSP; break;
+        objectsArray[selectedWeapon].SetActive(true);
+        SetHitValues(selectedWeapon);
+    }
+
+    private void SetHitValues(int weaponIndex)
+    {
+        switch (weaponIndex)
+        {
+            case 0: HitHP = daggerHP; HitSP = daggerSP; break;
+            case 1: HitHP = katanaHP; HitSP = katanaSP; break;
+            case 2: HitHP = longswordHP; HitSP = longswordSP; break;
+            case 3: HitHP = greatswordHP; HitSP = greatswordSP; break;
         }
     }
 }

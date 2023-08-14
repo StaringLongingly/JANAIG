@@ -2,58 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
-    public bool isFrozen = true;
+    public float CurrentSP { get; private set; }
+    public float CurrentHP { get; private set; }
+
+    public bool IsFrozen { get; private set; } = true;
     public float FrozenTime = 1.0f;
 
-    private string previousname = "";
-    private string currentname = "";
+    private string previousName = "";
+    private string currentName = "";
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isFrozen)
+        if (!IsFrozen)
         {
-            StartCoroutine(waiter()); 
-            previousname = GetParentName(other);
+            StartCoroutine(Waiter());
+            previousName = GetParentName(other);
         }
         else
         {
-            currentname = GetParentName(other);
-            if (previousname != currentname)
+            currentName = GetParentName(other);
+            if (previousName != currentName)
             {
-                previousname = currentname;
-                currentname = GetParentName(other);
+                previousName = currentName;
+                currentName = GetParentName(other);
+
+                (float hp, float sp) = GetHPAndSP(other);
+                CurrentHP += hp;
+                CurrentSP += sp;
             }
-            else 
+            else
             {
-                isFrozen = false;
-                previousname = "";
-                currentname = "";
+                IsFrozen = false;
+                previousName = "";
+                currentName = "";
                 Throw();
             }
         }
     }
 
-    IEnumerator waiter()
+    private IEnumerator Waiter()
     {
         yield return new WaitForSeconds(FrozenTime);
-        isFrozen = false; 
+        IsFrozen = false;
         Throw();
     }
 
-    void Throw()
+    private void Throw()
     {
         Debug.Log("Throw!");
     }
 
-    string GetParentName(Collider other)
+    private string GetParentName(Collider other)
     {
         Transform parentTransform = other.transform.parent;
-        if (parentTransform != null)
-        {
-            return parentTransform.gameObject.name;
-        }
-        return "";
+        return parentTransform != null ? parentTransform.gameObject.name : "";
+    }
+
+    private (float, float) GetHPAndSP(Collider other)
+    {
+        WeaponSelector wp = transform.parent.GetComponent<WeaponSelector>();
+        return wp != null ? (wp.HitHP, wp.HitSP) : (0f, 0f);
     }
 }
