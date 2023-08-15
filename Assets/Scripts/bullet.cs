@@ -1,120 +1,144 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
-{   
+{
+    [Header("Debug")]
+    // Debug
     public bool debug = false;
-    public bool debug_switch = false;
+    public bool debugSwitch = false;
+    public bool startthrow = false; void Update() { if (startthrow) { startthrow = false; StartCoroutine(Throw()); } }
 
-    public Rigidbody rb;
-    
-    public bool startthrow = false; void Update() { if (startthrow) { startthrow = false; StartCoroutine(Throw());
- } }
+    [Header("Throw Settings")]
+    // Throw variation settings
+    public float throwVariationX = 5f;
+    public float throwVariationY = 10f;
+    public float throwVariationZ = 15f;
 
-    public float ThrowVariationX = 10f;
-    public float ThrowVariationY = 20f;
-    public float ThrowVariationZ = 40f;
+    [Header("Health and Speed")]
+    // Scalar for adjusting health value
+    public float hpScalar = 1f;
+    // Current speed and health of the bullet
+    public float currentSP = 1f;
+    public float currentHP = 1f;
 
-    public float HPScalar = 1f;
+    [Header("Freeze Settings")]
+    // Flag to determine if the bullet is frozen
+    public bool isFrozen = true;
+    // Duration of freezing time
+    public float frozenTime = 1.0f;
 
-    public float CurrentSP = 1f;
-    public float CurrentHP = 1f;
+    // Store the name of the previously collided object
+    private string previousCollidedObjectName = "";
 
-    public bool IsFrozen = true;
-    public float FrozenTime = 1.0f;
+    private Rigidbody rb;
 
-    private string previousName = "";
-    private string currentName = "";
+    private void Awake()
+    {
+        // Get the Rigidbody component of the bullet
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsFrozen)
+        if (!isFrozen)
         {
-            StartCoroutine(Waiter());
-            previousName = GetParentName(other);
+            // Wait for frozen time before throwing again
+            StartCoroutine(WaitThenThrow());
+            // Store the name of the collided object
+            previousCollidedObjectName = GetParentName(other);
         }
         else
         {
-            currentName = GetParentName(other);
-            if (previousName != currentName)
+            // Get the name of the currently collided object
+            string currentCollidedObjectName = GetParentName(other);
+            if (previousCollidedObjectName != currentCollidedObjectName)
             {
-                previousName = currentName;
-                currentName = GetParentName(other);
+                // Update previous object name and adjust health and speed
+                previousCollidedObjectName = currentCollidedObjectName;
 
-                (float hp, float sp) = GetHPAndSP(other);
-                CurrentHP += hp;
-                CurrentSP += sp;
+                (float hp, float speed) = GetHPAndSpeed(other);
+                currentHP += hp;
+                currentSP += speed;
             }
             else
             {
-                previousName = "";
-                currentName = "";
+                // Reset previous object name and initiate throw
+                previousCollidedObjectName = "";
                 StartCoroutine(Throw());
-
             }
         }
     }
 
-    private IEnumerator Waiter()
+    private IEnumerator WaitThenThrow()
     {
-        yield return new WaitForSeconds(FrozenTime);
+        // Wait for frozen time before initiating throw
+        yield return new WaitForSeconds(frozenTime);
         StartCoroutine(Throw());
-
     }
 
     private IEnumerator Throw()
     {
-        IsFrozen = false;
+        isFrozen = false;
 
-        if (CurrentSP > 400) { CurrentSP = 400; }
-        float ThrowDuration = -0.005f * CurrentSP + 3f;
+        // Limit the maximum speed
+        if (currentSP > 400) { currentSP = 400; }
+        // Calculate throw duration based on current speed
+        float throwDuration = -0.005f * currentSP + 3f;
 
-        float elapsedTime = 0.0f;
+        // Define throw trajectory points
+        Vector3 startPos = new Vector3(-10f, 0f, 0f);
+        Vector3 endPos = new Vector3(10f, 0f, 0f);
 
-        Vector3 startPos = new Vector3 (-10f, 0f, 0f);
-        Vector3 endPos = new Vector3 (10f, 0f, 0f);
         if (debug)
         {
-            debug_switch = !debug_switch;
-
-            if (debug_switch) { startPos *= -1; endPos *= -1; }
+            // Modify trajectory points for debugging
+            debugSwitch = !debugSwitch;
+            if (debugSwitch) { startPos *= -1; endPos *= -1; }
         }
-        //startPos = gameObject.transform.position;
-        Vector3 controlPos = new Vector3
-        (
-            Random.Range(-ThrowVariationX, ThrowVariationX),
-            Random.Range(0, ThrowVariationY),
-            Random.Range(-ThrowVariationZ, ThrowVariationZ)
+
+        // Define control point for Bezier curve
+        Vector3 controlPos = new Vector3(
+            Random.Range(-throwVariationX, throwVariationX),
+            Random.Range(0, throwVariationY),
+            Random.Range(-throwVariationZ, throwVariationZ)
         );
 
         Debug.Log("Throw at " + controlPos);
 
-        while (elapsedTime < ThrowDuration && !IsFrozen)
+        float elapsedTime = 0.0f;
+        while (elapsedTime < throwDuration && !isFrozen)
         {
-            float t = elapsedTime / ThrowDuration;
+            float t = elapsedTime / throwDuration;
 
-            // Quadratic Bezier curve formula
+            // Calculate new position using Quadratic Bezier curve formula
             Vector3 newPos = Mathf.Pow(1 - t, 2) * startPos + 2 * (1 - t) * t * controlPos + Mathf.Pow(t, 2) * endPos;
 
-            GetComponent<Rigidbody>().MovePosition(newPos);
+            // Move the bullet to the new position
+            rb.MovePosition(newPos);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         Debug.Log("Miss");
-        if (debug) { StartCoroutine(Throw()); }
+        if (debug)
+        {
+            // Initiate throw for debugging
+            StartCoroutine(Throw());
+        }
     }
 
     private string GetParentName(Collider other)
     {
+        // Get the name of the parent object if it exists
         Transform parentTransform = other.transform.parent;
         return parentTransform != null ? parentTransform.gameObject.name : "";
     }
 
-    private (float, float) GetHPAndSP(Collider other)
+    private (float, float) GetHPAndSpeed(Collider other)
     {
+        // Get health and speed values from the collided object's WeaponSelector component
         WeaponSelector wp = transform.parent.GetComponent<WeaponSelector>();
         return wp != null ? (wp.HitHP, wp.HitSP) : (0f, 0f);
     }
