@@ -118,6 +118,8 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GlowIntensity: 1
+    - _IntersectionDepth: 0.02
+    - _Intersection_Depth: 0
     - _Metallic: 0
     - _NormalThreshold: 0.5
     - _OVERLAY: 0
@@ -138,9 +140,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1024, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 1, g: 0, b: 0, a: 0.13333334}
+    - _NoiseColor: {r: 766.9963, g: 766.9963, b: 766.9963, a: 1}
+    - _OutlineColor: {r: 1012.0572, g: 1012.0572, b: 1012.0572, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
