@@ -8,12 +8,24 @@ public class Bullet : MonoBehaviour
     public bool debug = false;
     public bool debugSwitch = false;
 
+    [Header("Function Debug")]
+    // Function Debugging
+    public bool startthrow = false;
+    public bool startcolorchange = false;
+    void Update() 
+    {
+        if (debug)
+        {
+            if (startthrow) { startthrow = false; Debug.Log("Debug Throw Start!"); RestartThrow(); } 
+            if (startcolorchange) { startcolorchange = false; Debug.Log("Debug Color Change Start!"); ChangeColor(); }
+        }
+    }
+
     [Header("Dummy Mode")]
     public bool dummy_mode = true;
     public bool dummy_turn = true;
     public float dummy_wait_time = 0f;
 
-    public bool startthrow = false; void Update() { if (startthrow) { startthrow = false; RestartThrow(); } }
 
     [Header("Throw Settings")]
     // Throw variation settings
@@ -22,15 +34,16 @@ public class Bullet : MonoBehaviour
     public float throwVariationZ = 15f;
 
     [Header("Health and Speed")]
-    // Scalar for adjusting health value
-    public float hpScalar = 1f;
     // Current speed and health of the bullet
     public float currentSP = 0f;
     public float currentHP = 0f;
+    public Material bulletMaterial;
+    public Material WatchMaterial;
+    public bool SeparateColorMode = false;
 
     [Header("Freeze Settings")]
     // Flag to determine if the bullet is frozen
-    public bool isFrozen = true;
+    public bool isFrozen = false;
     // Duration of freezing time
     public float frozenTime = 1.0f;
 
@@ -45,15 +58,19 @@ public class Bullet : MonoBehaviour
         // Get the Rigidbody component of the bullet
         rb = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
+        ChangeColor();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        ChangeColor();
+
         if (!isFrozen)
         {
             isFrozen = true;
             if (dummy_mode) { dummy_turn = false; }
             // Wait for frozen time before throwing again
+            Debug.Log("First Hit1");
             StartCoroutine(WaitThenThrow());
             // Store the name of the collided object
             previousCollidedObjectName = GetParentName(other);
@@ -69,7 +86,7 @@ public class Bullet : MonoBehaviour
 
                 (float hp, float speed) = GetHPAndSpeed(other);
                 currentHP += hp;
-                Debug.Log("Speed Add!");
+                //Debug.Log("Speed Add!");
                 currentSP += speed;
             }
             else
@@ -86,6 +103,7 @@ public class Bullet : MonoBehaviour
         Debug.Log("Waiter Activated!");
         // Wait for frozen time before initiating throw
         yield return new WaitForSeconds(frozenTime);
+        Debug.Log("Waiter Finished");
         if (dummy_mode) { dummy_turn = false; }
         RestartThrow();
     }
@@ -112,7 +130,7 @@ public class Bullet : MonoBehaviour
         Vector3 PlayerPos = new Vector3(10f, 1.5f, 0f);
         Vector3 DummyPos = new Vector3(-10f, 1f, 0f);
 
-        Vector3 startPos = PlayerPos;
+        Vector3 startPos = gameObject.transform.position;
         Vector3 endPos = DummyPos;
 
         if (dummy_turn) //if its dummy's turn the bullet goes from the dummy to the player
@@ -124,11 +142,11 @@ public class Bullet : MonoBehaviour
         // Define control point for Bezier curve
         Vector3 controlPos = new Vector3(
             Random.Range(-throwVariationX, throwVariationX),
-            Random.Range(0, throwVariationY),
+            Random.Range(-throwVariationY, throwVariationY),
             Random.Range(-throwVariationZ, throwVariationZ)
         );
 
-        Debug.Log("Throw at " + controlPos);
+        //Debug.Log("Throw at " + controlPos);
 
         float elapsedTime = 0.0f;
         while (elapsedTime < throwDuration)
@@ -147,20 +165,17 @@ public class Bullet : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Miss");
-        if (debug)
-        {
-            // Initiate throw for debugging
-            RestartThrow();
-        }
+        //Debug.Log("Miss");
 
         if (dummy_mode)
         {
             currentHP = 0;
-            currentSP = 0;
+            if ( dummy_turn) { currentSP = 0; }
             dummy_turn = true;
         }
         if (dummy_mode && dummy_turn) { RestartThrow(); }
+
+        ChangeColor();
     
     }
 
@@ -182,5 +197,35 @@ public class Bullet : MonoBehaviour
         // Get health and speed values from the collided object's WeaponSelector component
         WeaponSelector wp = other.transform.parent.GetComponent<WeaponSelector>();
         return wp != null ? (wp.HitHP, wp.HitSP) : (0f, 0f);
+    }
+
+    private void ChangeColor()
+    {   
+        WatchMaterial.SetFloat("_SP", currentSP/400);
+        WatchMaterial.SetFloat("_HP", currentHP/400);
+
+        if (currentSP == 0 && currentHP == 0)
+        {
+            Color White = new Color(1.0f, 1.0f, 1.0f);
+            bulletMaterial.SetColor("_NoiseColor", White);
+            bulletMaterial.SetColor("_OutlineColor", White);
+        }
+        else
+        {
+            if (SeparateColorMode)
+            {
+                Color NoiseColor = new Color(currentHP/400, 0.0f, 0.0f, 1.0f);
+                Color OutlineColor = new Color(0.0f, 0.0f, currentSP/400, 1.0f);
+
+                bulletMaterial.SetColor("_NoiseColor", NoiseColor);
+                bulletMaterial.SetColor("_OutlineColor", OutlineColor);
+            }
+            else
+            {
+                Color Universalcolor = new Color(currentHP/400, 0.0f, currentSP/400, 1.0f);
+                bulletMaterial.SetColor("_NoiseColor", Universalcolor);
+                bulletMaterial.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            }
+        }
     }
 }

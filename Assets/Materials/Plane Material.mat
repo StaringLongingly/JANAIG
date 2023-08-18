@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _METALLICSPECGLOSSMAP
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -40,7 +41,7 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: b8c5b9657e2d863448be8a8f73d049f5, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.2, y: 0.2}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
@@ -59,15 +60,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: b8c5b9657e2d863448be8a8f73d049f5, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.2, y: 0.2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b8c5b9657e2d863448be8a8f73d049f5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -113,12 +114,12 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0
+    - _Metallic: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.74
     - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -127,8 +128,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.94758666, g: 0.9528302, b: 0.85844606, a: 1}
-    - _Color: {r: 0.9475866, g: 0.95283014, b: 0.85844606, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
+    - _Color: {r: 0.24528295, g: 0.24528295, b: 0.24528295, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

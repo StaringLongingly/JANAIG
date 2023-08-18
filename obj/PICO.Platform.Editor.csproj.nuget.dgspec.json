@@ -1,0 +1,221 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj",
+        "projectName": "PICO.Platform",
+        "projectPath": "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj",
+        "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\maste\\JANAIG\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\maste\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj"
+              },
+              "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj",
+        "projectName": "PICO.Platform.Editor",
+        "projectPath": "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj",
+        "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\maste\\JANAIG\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\maste\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj"
+              },
+              "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj"
+              },
+              "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj",
+        "projectName": "Unity.XR.PICO",
+        "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj",
+        "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\maste\\JANAIG\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\maste\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj",
+        "projectName": "Unity.XR.PICO.Editor",
+        "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj",
+        "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\maste\\JANAIG\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\maste\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj": {
+                "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
