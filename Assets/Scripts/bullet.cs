@@ -121,8 +121,6 @@ public class Bullet : MonoBehaviour
 
         isFrozen = false;
 
-        // Limit the maximum speed
-        if (currentSP > 400) { currentSP = 400; }
         // Calculate throw duration based on current speed
         float throwDuration = -0.005f * currentSP + 3f;
 
@@ -201,6 +199,9 @@ public class Bullet : MonoBehaviour
 
     private void ChangeColor()
     {   
+        if (currentHP > 400) { currentHP = 400; }
+        if (currentSP > 400) { currentSP = 400; }
+ 
         WatchMaterial.SetFloat("_SP", currentSP/400);
         WatchMaterial.SetFloat("_HP", currentHP/400);
 
