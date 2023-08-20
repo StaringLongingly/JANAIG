@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -17,7 +18,7 @@ public class Bullet : MonoBehaviour
         if (debug)
         {
             if (startthrow) { startthrow = false; Debug.Log("Debug Throw Start!"); RestartThrow(); } 
-            if (startcolorchange) { startcolorchange = false; Debug.Log("Debug Color Change Start!"); ChangeColor(); }
+            if (startcolorchange) { startcolorchange = false; Debug.Log("Debug Color Change Start!"); ChangeColorAndText(); }
         }
     }
 
@@ -25,7 +26,9 @@ public class Bullet : MonoBehaviour
     public bool dummy_mode = true;
     public bool dummy_turn = true;
     public float dummy_wait_time = 0f;
-
+    public float DummyHP = 0;
+    public float DummyStock = 0;
+    public TextMeshPro scoreText, HPText;
 
     [Header("Throw Settings")]
     // Throw variation settings
@@ -39,6 +42,7 @@ public class Bullet : MonoBehaviour
     public float currentHP = 0f;
     public Material bulletMaterial;
     public Material WatchMaterial;
+    public Material trailMaterial;
     public bool SeparateColorMode = false;
 
     [Header("Freeze Settings")]
@@ -58,44 +62,48 @@ public class Bullet : MonoBehaviour
         // Get the Rigidbody component of the bullet
         rb = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
-        ChangeColor();
+        ChangeColorAndText();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        ChangeColor();
+        ChangeColorAndText();
 
-        if (!isFrozen)
+        if (other.gameObject.CompareTag("Weapon"))
         {
-            isFrozen = true;
-            if (dummy_mode) { dummy_turn = false; }
-            // Wait for frozen time before throwing again
-            Debug.Log("First Hit1");
-            StartCoroutine(WaitThenThrow());
-            // Store the name of the collided object
-            previousCollidedObjectName = GetParentName(other);
-        }
-        else
-        {
-            // Get the name of the currently collided object
-            string currentCollidedObjectName = GetParentName(other);
-            if (previousCollidedObjectName != currentCollidedObjectName)
+            if (!isFrozen)
             {
-                // Update previous object name and adjust health and speed
-                previousCollidedObjectName = currentCollidedObjectName;
-
-                (float hp, float speed) = GetHPAndSpeed(other);
-                currentHP += hp;
-                //Debug.Log("Speed Add!");
-                currentSP += speed;
+                isFrozen = true;
+                if (dummy_mode) { dummy_turn = false; }
+                // Wait for frozen time before throwing again
+                Debug.Log("First Hit1");
+                StartCoroutine(WaitThenThrow());
+                // Store the name of the collided object
+                previousCollidedObjectName = GetParentName(other);
             }
             else
             {
-                // Reset previous object name and initiate throw
-                previousCollidedObjectName = "";
-                RestartThrow();
+                // Get the name of the currently collided object
+                string currentCollidedObjectName = GetParentName(other);
+                if (previousCollidedObjectName != currentCollidedObjectName)
+                {
+                    // Update previous object name and adjust health and speed
+                    previousCollidedObjectName = currentCollidedObjectName;
+
+                    (float hp, float speed) = GetHPAndSpeed(other);
+                    currentHP += hp;
+                    //Debug.Log("Speed Add!");
+                    currentSP += speed;
+                }
+                else
+                {
+                    // Reset previous object name and initiate throw
+                    previousCollidedObjectName = "";
+                    RestartThrow();
+                }
             }
         }
+        
     }
 
     private IEnumerator WaitThenThrow()
@@ -109,14 +117,16 @@ public class Bullet : MonoBehaviour
     }
 
     private IEnumerator Throw()
-    {
+    {  
+
         if ( dummy_turn && dummy_mode )
-        { 
-            trailRenderer.enabled = false;
+        {
+            trailRenderer.emitting = false;
+            yield return new WaitForSeconds(0.1f);
             rb.MovePosition(new Vector3(-10f,1f,0f));
+            yield return new WaitForSeconds(0.1f);
+            trailRenderer.emitting = true;
             yield return new WaitForSeconds(dummy_wait_time); 
-            trailRenderer.enabled = true;
-            trailRenderer.Clear();
         }
 
         isFrozen = false;
@@ -165,16 +175,30 @@ public class Bullet : MonoBehaviour
 
         //Debug.Log("Miss");
 
-        if (dummy_mode)
+        // if it was players turn before, increase score and stock
+        if (!dummy_turn)
         {
+            currentSP = 0;
+            DummyHP += currentHP;
             currentHP = 0;
-            if ( dummy_turn) { currentSP = 0; }
-            dummy_turn = true;
+            if (DummyHP >= 400)
+            {
+                DummyHP = 0;
+                DummyStock += 1;
+            }
+            //Debug.Log("Hit! Current HP: " + DummyHP + "Current Stock: " + DummyStock); 
         }
-        if (dummy_mode && dummy_turn) { RestartThrow(); }
-
-        ChangeColor();
-    
+        else
+        {
+            // if player missed, then reset the score
+            (DummyHP, DummyStock) = (0, 0);
+        }
+        scoreText.text = DummyStock.ToString();
+        HPText.text = DummyHP.ToString();
+        ChangeColorAndText();
+        // prepare for dummy rethrow
+        dummy_turn = true;
+        RestartThrow();
     }
 
     private void RestartThrow()
@@ -197,36 +221,21 @@ public class Bullet : MonoBehaviour
         return wp != null ? (wp.HitHP, wp.HitSP) : (0f, 0f);
     }
 
-    private void ChangeColor()
+    private void ChangeColorAndText()
     {   
         if (currentHP > 400) { currentHP = 400; }
         if (currentSP > 400) { currentSP = 400; }
+
+        scoreText.text = DummyStock.ToString();
+        HPText.text = DummyHP.ToString();
  
         WatchMaterial.SetFloat("_SP", currentSP/400);
         WatchMaterial.SetFloat("_HP", currentHP/400);
 
-        if (currentSP == 0 && currentHP == 0)
-        {
-            Color White = new Color(1.0f, 1.0f, 1.0f);
-            bulletMaterial.SetColor("_NoiseColor", White);
-            bulletMaterial.SetColor("_OutlineColor", White);
-        }
-        else
-        {
-            if (SeparateColorMode)
-            {
-                Color NoiseColor = new Color(currentHP/400, 0.0f, 0.0f, 1.0f);
-                Color OutlineColor = new Color(0.0f, 0.0f, currentSP/400, 1.0f);
+        trailMaterial.SetFloat("_SP", currentSP/400);
+        trailMaterial.SetFloat("_HP", currentHP/400);
 
-                bulletMaterial.SetColor("_NoiseColor", NoiseColor);
-                bulletMaterial.SetColor("_OutlineColor", OutlineColor);
-            }
-            else
-            {
-                Color Universalcolor = new Color(currentHP/400, 0.0f, currentSP/400, 1.0f);
-                bulletMaterial.SetColor("_NoiseColor", Universalcolor);
-                bulletMaterial.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
-            }
-        }
+        bulletMaterial.SetFloat("_SP", currentSP/400);
+        bulletMaterial.SetFloat("_HP", currentHP/400);
     }
 }
