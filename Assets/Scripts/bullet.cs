@@ -36,6 +36,11 @@ public class Bullet : MonoBehaviour
     public float throwVariationY = 10f;
     public float throwVariationZ = 15f;
 
+    [Header("Bullet Reset")]
+    public (float, float) resetVariationX = (-0.2f, -0.4f); 
+    public (float, float) resetVariationY = (-0.4f, 0.4f);
+    public (float, float) resetVariationZ = (-0.3f, 0.3f);
+
     [Header("Health and Speed")]
     // Current speed and health of the bullet
     public float currentSP = 0f;
@@ -65,32 +70,43 @@ public class Bullet : MonoBehaviour
         ChangeColorAndText();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void CollideWithSword(Collider swordCollider)
     {
         ChangeColorAndText();
 
-        if (other.gameObject.CompareTag("Weapon"))
+        if (swordCollider.gameObject.CompareTag("Weapon"))
         {
+            Vector3 randomPosition = new Vector3
+            (
+                Random.Range(resetVariationX.Item1, resetVariationX.Item2),
+                Random.Range(resetVariationY.Item1, resetVariationY.Item2),
+                Random.Range(resetVariationZ.Item1, resetVariationZ.Item2)
+            );
+            gameObject.transform.position = randomPosition.normalized * 0.8f + new Vector3(10f, 1.5f, 0f);
+
+
             if (!isFrozen)
             {
                 isFrozen = true;
+                StopAllCoroutines();
                 if (dummy_mode) { dummy_turn = false; }
                 // Wait for frozen time before throwing again
-                Debug.Log("First Hit1");
+                Debug.Log("First Hit!");
                 StartCoroutine(WaitThenThrow());
                 // Store the name of the collided object
-                previousCollidedObjectName = GetParentName(other);
+                previousCollidedObjectName = GetParentName(swordCollider);
             }
             else
             {
                 // Get the name of the currently collided object
-                string currentCollidedObjectName = GetParentName(other);
+                string currentCollidedObjectName = GetParentName(swordCollider);
                 if (previousCollidedObjectName != currentCollidedObjectName)
                 {
+                    
                     // Update previous object name and adjust health and speed
                     previousCollidedObjectName = currentCollidedObjectName;
 
-                    (float hp, float speed) = GetHPAndSpeed(other);
+                    (float hp, float speed) = GetHPAndSpeed(swordCollider);
                     currentHP += hp;
                     //Debug.Log("Speed Add!");
                     currentSP += speed;
@@ -113,12 +129,11 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(frozenTime);
         Debug.Log("Waiter Finished");
         if (dummy_mode) { dummy_turn = false; }
-        RestartThrow();
+        if (isFrozen) RestartThrow();
     }
 
     private IEnumerator Throw()
     {  
-
         if ( dummy_turn && dummy_mode )
         {
             trailRenderer.emitting = false;
@@ -159,7 +174,7 @@ public class Bullet : MonoBehaviour
         float elapsedTime = 0.0f;
         while (elapsedTime < throwDuration)
         {
-            if (isFrozen) { StopAllCoroutines(); }
+            if (isFrozen) {  }
 
             float t = elapsedTime / throwDuration;
 
@@ -207,17 +222,17 @@ public class Bullet : MonoBehaviour
         StartCoroutine(Throw());
     }
 
-    private string GetParentName(Collider other)
+    private string GetParentName(Collider swordCollider)
     {
         // Get the name of the parent object if it exists
-        Transform parentTransform = other.transform.parent;
+        Transform parentTransform = swordCollider.transform.parent;
         return parentTransform != null ? parentTransform.gameObject.name : "";
     }
 
-    private (float, float) GetHPAndSpeed(Collider other)
+    private (float, float) GetHPAndSpeed(Collider swordCollider)
     {
         // Get health and speed values from the collided object's WeaponSelector component
-        WeaponSelector wp = other.transform.parent.GetComponent<WeaponSelector>();
+        WeaponSelector wp = swordCollider.transform.parent.GetComponent<WeaponSelector>();
         return wp != null ? (wp.HitHP, wp.HitSP) : (0f, 0f);
     }
 

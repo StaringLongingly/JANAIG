@@ -61,8 +61,10 @@
     <Compile Include="Assets\EzySlice\Framework\Plane.cs" />
     <Compile Include="Assets\EzySlice\SlicedHull.cs" />
     <Compile Include="Assets\EzySlice\Slicer.cs" />
+    <Compile Include="Assets\Scripts\Mirror.cs" />
     <Compile Include="Assets\EzySlice\Framework\Triangulator.cs" />
     <Compile Include="Assets\EzySlice\SlicerExtensions.cs" />
+    <Compile Include="Assets\Scripts\SceneChanger.cs" />
     <Compile Include="Assets\EzySlice\Framework\Triangle.cs" />
     <Compile Include="Assets\EzySlice\Framework\TextureRegion.cs" />
     <Compile Include="Assets\Scripts\SliceObject.cs" />
