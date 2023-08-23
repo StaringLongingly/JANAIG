@@ -90,12 +90,12 @@ public class SliceObject : MonoBehaviour
     public IEnumerator DestroySlicedObject(GameObject slicedObject, GameObject target)
     {
         yield return new WaitForSeconds(1);
+        if ( target.GetComponent<SceneChanger>() != null ) { StartCoroutine(target.GetComponent<SceneChanger>().SwitchScene()); }
         while ( slicedObject.transform.localScale.x >= 0.01 ) 
         {
             yield return new WaitForSeconds(0.16f);
             slicedObject.transform.localScale = slicedObject.transform.localScale * 0.8f;
         }
-        if ( target.GetComponent<SceneChanger>() != null ) { StartCoroutine(target.GetComponent<SceneChanger>().SwitchScene()); }
         Destroy(slicedObject);
     }
 
