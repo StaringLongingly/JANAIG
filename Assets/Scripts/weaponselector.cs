@@ -8,6 +8,10 @@ public class WeaponSelector : MonoBehaviour
     // Index of the currently selected weapon
     [SerializeField] private int selectedWeapon = 0;
 
+    // Health and Speed Scalars
+    [SerializeField] private float HPScalar = 0.25f;
+    [SerializeField] private float SPScalar = 0.25f;
+
     // Health and Speed Points (HP and SP) for different weapons
     [SerializeField] private float daggerHP = 100f;
     [SerializeField] private float daggerSP = 25f;
@@ -45,5 +49,8 @@ public class WeaponSelector : MonoBehaviour
             case 3: HitHP = greatswordHP; HitSP = greatswordSP; break;
             default: HitHP = 0f; HitSP = 0f; break; // Handle unexpected index
         }
+
+        HitHP *= HPScalar;
+        HitSP *= SPScalar;
     }
 }

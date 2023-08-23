@@ -32,22 +32,22 @@ public class Bullet : MonoBehaviour
 
     [Header("Throw Settings")]
     // Throw variation settings
+    public Material ThrowDirectionMaterial;
+    public VelocityEstimator velocityEstimator;
+    public Vector2 swordVelocity2D;
+    public Vector3 swordVelocity3D;
+    public float ThrowDistanceScalar = 4f;
     public float throwVariationX = 5f;
     public float throwVariationY = 10f;
+    public float throwVariationYZ = 4f;
     public float throwVariationZ = 15f;
 
-    [Header("Bullet Reset")]
-    public (float, float) resetVariationX = (-0.2f, -0.4f); 
-    public (float, float) resetVariationY = (-0.4f, 0.4f);
-    public (float, float) resetVariationZ = (-0.3f, 0.3f);
 
     [Header("Health and Speed")]
     // Current speed and health of the bullet
     public float currentSP = 0f;
     public float currentHP = 0f;
-    public Material bulletMaterial;
-    public Material WatchMaterial;
-    public Material trailMaterial;
+    public Material bulletMaterial, WatchMaterial, trailMaterial;
     public bool SeparateColorMode = false;
 
     [Header("Freeze Settings")]
@@ -68,22 +68,28 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
         ChangeColorAndText();
+        ThrowDirectionMaterial.SetFloat("_angle", 0);
     }
 
     public void CollideWithSword(Collider swordCollider)
     {
+        gameObject.GetComponent<MoveAndGrowBullet>().MoveAndGrowBulletFunction();
         ChangeColorAndText();
 
         if (swordCollider.gameObject.CompareTag("Weapon"))
         {
-            Vector3 randomPosition = new Vector3
-            (
-                Random.Range(resetVariationX.Item1, resetVariationX.Item2),
-                Random.Range(resetVariationY.Item1, resetVariationY.Item2),
-                Random.Range(resetVariationZ.Item1, resetVariationZ.Item2)
-            );
-            gameObject.transform.position = randomPosition.normalized * 0.8f + new Vector3(10f, 1.5f, 0f);
+            velocityEstimator = swordCollider.gameObject.GetComponent<SliceObject>().velocityEstimator;
+            swordVelocity3D = velocityEstimator.GetVelocityEstimate();
+            swordVelocity2D = new Vector2(swordVelocity3D.z, swordVelocity3D.y);
 
+            float angle = Vector2.Angle
+            (
+                new Vector2(0,1),
+                swordVelocity2D.normalized
+            );
+
+            Debug.Log("Cut angle is: " + angle);
+            ThrowDirectionMaterial.SetFloat("_angle", -angle);
 
             if (!isFrozen)
             {
@@ -102,7 +108,6 @@ public class Bullet : MonoBehaviour
                 string currentCollidedObjectName = GetParentName(swordCollider);
                 if (previousCollidedObjectName != currentCollidedObjectName)
                 {
-                    
                     // Update previous object name and adjust health and speed
                     previousCollidedObjectName = currentCollidedObjectName;
 
@@ -163,18 +168,18 @@ public class Bullet : MonoBehaviour
         }
 
         // Define control point for Bezier curve
+        Vector2 swordVelocity2DRandomized = swordVelocity3D.magnitude * ThrowDistanceScalar * swordVelocity2D;
         Vector3 controlPos = new Vector3(
             Random.Range(-throwVariationX, throwVariationX),
-            Random.Range(-throwVariationY, throwVariationY),
-            Random.Range(-throwVariationZ, throwVariationZ)
+            swordVelocity2DRandomized.y,
+            swordVelocity2DRandomized.x
         );
 
         //Debug.Log("Throw at " + controlPos);
 
         float elapsedTime = 0.0f;
-        while (elapsedTime < throwDuration)
+        while (elapsedTime < throwDuration && !isFrozen)
         {
-            if (isFrozen) {  }
 
             float t = elapsedTime / throwDuration;
 
@@ -218,6 +223,7 @@ public class Bullet : MonoBehaviour
 
     private void RestartThrow()
     {
+        gameObject.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
         StopAllCoroutines();
         StartCoroutine(Throw());
     }

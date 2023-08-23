@@ -1,173 +1,11 @@
 {
   "version": 3,
   "targets": {
-    ".NETStandard,Version=v2.0": {
-      "PICO.Platform/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Unity.XR.PICO": "1.0.0",
-          "Unity.XR.PICO.Editor": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/PICO.Platform.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PICO.Platform.dll": {}
-        }
-      },
-      "PICO.Platform.Editor/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "PICO.Platform": "1.0.0",
-          "Unity.XR.PICO": "1.0.0",
-          "Unity.XR.PICO.Editor": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/PICO.Platform.Editor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PICO.Platform.Editor.dll": {}
-        }
-      },
-      "Pico.Spatializer/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/Pico.Spatializer.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Pico.Spatializer.dll": {}
-        }
-      },
-      "Pico.Spatializer.Editor/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Pico.Spatializer": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Pico.Spatializer.Editor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Pico.Spatializer.Editor.dll": {}
-        }
-      },
-      "Pico.Spatializer.Example/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/Pico.Spatializer.Example.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Pico.Spatializer.Example.dll": {}
-        }
-      },
-      "Unity.XR.Interaction.Toolkit.Samples.StarterAssets/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.dll": {}
-        }
-      },
-      "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.dll": {}
-        }
-      },
-      "Unity.XR.PICO/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/Unity.XR.PICO.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.XR.PICO.dll": {}
-        }
-      },
-      "Unity.XR.PICO.Editor/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Unity.XR.PICO": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Unity.XR.PICO.Editor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.XR.PICO.Editor.dll": {}
-        }
-      }
-    }
+    ".NETStandard,Version=v2.0": {}
   },
-  "libraries": {
-    "PICO.Platform/1.0.0": {
-      "type": "project",
-      "path": "PICO.Platform.csproj",
-      "msbuildProject": "PICO.Platform.csproj"
-    },
-    "PICO.Platform.Editor/1.0.0": {
-      "type": "project",
-      "path": "PICO.Platform.Editor.csproj",
-      "msbuildProject": "PICO.Platform.Editor.csproj"
-    },
-    "Pico.Spatializer/1.0.0": {
-      "type": "project",
-      "path": "Pico.Spatializer.csproj",
-      "msbuildProject": "Pico.Spatializer.csproj"
-    },
-    "Pico.Spatializer.Editor/1.0.0": {
-      "type": "project",
-      "path": "Pico.Spatializer.Editor.csproj",
-      "msbuildProject": "Pico.Spatializer.Editor.csproj"
-    },
-    "Pico.Spatializer.Example/1.0.0": {
-      "type": "project",
-      "path": "Pico.Spatializer.Example.csproj",
-      "msbuildProject": "Pico.Spatializer.Example.csproj"
-    },
-    "Unity.XR.Interaction.Toolkit.Samples.StarterAssets/1.0.0": {
-      "type": "project",
-      "path": "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj",
-      "msbuildProject": "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj"
-    },
-    "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor/1.0.0": {
-      "type": "project",
-      "path": "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj",
-      "msbuildProject": "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj"
-    },
-    "Unity.XR.PICO/1.0.0": {
-      "type": "project",
-      "path": "Unity.XR.PICO.csproj",
-      "msbuildProject": "Unity.XR.PICO.csproj"
-    },
-    "Unity.XR.PICO.Editor/1.0.0": {
-      "type": "project",
-      "path": "Unity.XR.PICO.Editor.csproj",
-      "msbuildProject": "Unity.XR.PICO.Editor.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETStandard,Version=v2.0": [
-      "PICO.Platform >= 1.0.0",
-      "PICO.Platform.Editor >= 1.0.0",
-      "Pico.Spatializer >= 1.0.0",
-      "Pico.Spatializer.Editor >= 1.0.0",
-      "Pico.Spatializer.Example >= 1.0.0",
-      "Unity.XR.Interaction.Toolkit.Samples.StarterAssets >= 1.0.0",
-      "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor >= 1.0.0",
-      "Unity.XR.PICO >= 1.0.0",
-      "Unity.XR.PICO.Editor >= 1.0.0"
-    ]
+    ".NETStandard,Version=v2.0": []
   },
   "packageFolders": {
     "C:\\Users\\maste\\.nuget\\packages\\": {}
@@ -175,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\maste\\JANAIG\\Assembly-CSharp.csproj",
-      "projectName": "Assembly-CSharp",
-      "projectPath": "c:\\Users\\maste\\JANAIG\\Assembly-CSharp.csproj",
+      "projectUniqueName": "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.csproj",
+      "projectName": "Pico.Spatializer",
+      "projectPath": "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.csproj",
       "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
       "outputPath": "c:\\Users\\maste\\JANAIG\\obj\\",
       "projectStyle": "PackageReference",
@@ -193,35 +31,7 @@
       "frameworks": {
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
-          "projectReferences": {
-            "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\PICO.Platform.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\PICO.Platform.Editor.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.Editor.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.Editor.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.Example.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Pico.Spatializer.Example.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.csproj"
-            },
-            "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj": {
-              "projectPath": "c:\\Users\\maste\\JANAIG\\Unity.XR.PICO.Editor.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
