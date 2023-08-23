@@ -1,2 +1,2 @@
-# JANAIG
- Just Another Nier Automata Inspired Game, a VR experience
+# じゃない５ (Not 5)
+a VR experience
