@@ -80,10 +80,13 @@ public class SliceObject : MonoBehaviour
     public void SetupSlicedComponent(GameObject slicedObject, GameObject target)
     {
         StartCoroutine(DestroySlicedObject(slicedObject, target));
+
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
-        //rb.useGravity = false;
+
+        rb.useGravity = false;
         collider.convex = true;
+        
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
     }
 

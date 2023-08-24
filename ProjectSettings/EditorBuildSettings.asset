@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dummy Mode.unity
     guid: e5800e6353c58e4408e3e0380c0d1b02
+  - enabled: 1
+    path: Assets/Scenes/Weapon Settings.unity
+    guid: 355b52fc3b284ab4f982cc06c45ce627
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 0c004c4ef4bd33e4890456efe8102042,
       type: 2}

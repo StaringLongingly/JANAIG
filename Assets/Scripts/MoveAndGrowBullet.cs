@@ -11,10 +11,10 @@ public class MoveAndGrowBullet : MonoBehaviour
     public void MoveAndGrowBulletFunction()
     {
         StopAllCoroutines();
-        StartCoroutine(MoveAndGrowBulletCoroutine());
+        StartCoroutine(MoveBullet());
     }
 
-    private IEnumerator MoveAndGrowBulletCoroutine()
+    private IEnumerator MoveBullet()
     {
         Vector3 randomPosition = new Vector3
         (
@@ -34,16 +34,27 @@ public class MoveAndGrowBullet : MonoBehaviour
         }
         gameObject.transform.position = newBulletPosition;
 
+        GrowBulletFunction(false);
+    }
+
+    public void GrowBulletFunction(bool wait) { StartCoroutine(GrowBulletCoroutine(wait)); }
+
+    public IEnumerator GrowBulletCoroutine(bool wait)
+    {
         float startingSize = 0.01f;
         float growRate = 1.5f;
 
+        gameObject.transform.localScale = new Vector3(0,0,0);
+        if (wait) { yield return new WaitForSeconds(0.5f); }
         gameObject.transform.localScale = new Vector3(startingSize, startingSize, startingSize);
+
         while (gameObject.transform.localScale.z < 0.25f)
         {
-            Debug.Log("Changing Size!");
+            //Debug.Log("Changing Size!");
             gameObject.transform.localScale *= growRate;
 
             yield return new WaitForSeconds(0.01f);
         }
     }
+
 }

@@ -1,56 +1,93 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class WeaponSelector : MonoBehaviour
 {
-    // Array of weapon objects to be selected
-    [SerializeField] private GameObject[] objectsArray;
-
     // Index of the currently selected weapon
-    [SerializeField] private int selectedWeapon = 0;
+    [Header("Weapon Resize")]
+    [SerializeField] public float previousWeaponSize;
+    [SerializeField] public float maxWeaponSize = 4;
+    [SerializeField] public float desiredWeaponSize, lerpedWeaponSize, resizeDuration = 0.5f;
+    [SerializeField] public bool isLeftController, startResize;
+
 
     // Health and Speed Scalars
+    [Header("Scalars")]
     [SerializeField] private float HPScalar = 0.25f;
     [SerializeField] private float SPScalar = 0.25f;
 
-    // Health and Speed Points (HP and SP) for different weapons
-    [SerializeField] private float daggerHP = 100f;
-    [SerializeField] private float daggerSP = 25f;
+    [Header("Objects")]
+    public GameObject weaponBlade;
+    public GameObject weaponTip;
+    public CapsuleCollider hurtBox;
 
-    [SerializeField] private float katanaHP = 50f;
-    [SerializeField] private float katanaSP = 75f;
-
-    [SerializeField] private float longswordHP = 75f;
-    [SerializeField] private float longswordSP = 50f;
-
-    [SerializeField] private float greatswordHP = 25f;
-    [SerializeField] private float greatswordSP = 100f;
 
     // Current Hit HP and SP properties accessible from other scripts
     public float HitHP { get; private set; }
     public float HitSP { get; private set; }
+    public float unscaledHitHP = 0;
+    public float unscaledHitSP = 0;
+
+    private void Update() { if (startResize) { startResize = false; SwitchWeapon(); } }
 
     private void Start()
     {
-        // Activate the GameObject for the selected weapon
-        objectsArray[selectedWeapon].SetActive(true);
+        // Activate the GameObject for the selected weapon3
+        SwitchWeapon();
+    }
 
-        // Set Hit HP and SP values for the selected weapon
-        SetHitValues(selectedWeapon);
+    public void SwitchWeapon()
+    {
+        if (isLeftController) { desiredWeaponSize = PlayerPrefs.GetFloat("weaponSizeLeft"); }
+        else { desiredWeaponSize = PlayerPrefs.GetFloat("weaponSizeRight"); }
+
+        if ( desiredWeaponSize > maxWeaponSize ) { desiredWeaponSize = maxWeaponSize; }
+        else if ( desiredWeaponSize < 0 ) { desiredWeaponSize = 0; }
+
+        SetHitValues();
+        StopAllCoroutines();
+        StartCoroutine(Resize());
     }
 
     // Set Hit HP and SP values based on the weapon index
-    private void SetHitValues(int weaponIndex)
+    private void SetHitValues()
     {
-        switch (weaponIndex)
-        {
-            case 0: HitHP = daggerHP; HitSP = daggerSP; break;
-            case 1: HitHP = katanaHP; HitSP = katanaSP; break;
-            case 2: HitHP = longswordHP; HitSP = longswordSP; break;
-            case 3: HitHP = greatswordHP; HitSP = greatswordSP; break;
-            default: HitHP = 0f; HitSP = 0f; break; // Handle unexpected index
-        }
+        // Vector X is HP, Y is SP
+        Vector2 minSize = new Vector2(100f, 25f);
+        Vector2 maxSize = new Vector2(25f, 100f);
+
+        Vector2 lerpedHPSP = Vector2.Lerp(minSize, maxSize, desiredWeaponSize / maxWeaponSize);
+        (HitHP, HitSP) = (lerpedHPSP.x, lerpedHPSP.y);
+
+        unscaledHitHP = HitHP;
+        unscaledHitSP = HitSP;
 
         HitHP *= HPScalar;
         HitSP *= SPScalar;
+    }
+
+    private IEnumerator Resize()
+    {
+        Debug.Log("Weapons Resizing!");
+
+        float previousWeaponSize = lerpedWeaponSize;
+        float lerpProgress = 0f;
+
+        while ( lerpProgress < 1 )
+        {
+            lerpProgress += Time.deltaTime * (1 / resizeDuration);
+            lerpedWeaponSize = Mathf.Lerp(previousWeaponSize, desiredWeaponSize, lerpProgress);
+
+            hurtBox.height = 4.6f + lerpedWeaponSize * 2;
+            hurtBox.center = new Vector3(0, 3.6f + lerpedWeaponSize, 0);
+
+            weaponTip.transform.localPosition =  new Vector3(0, 5.6f + lerpedWeaponSize * 2, 0);
+
+            weaponBlade.transform.localScale = new Vector3(0.45f, 2f + lerpedWeaponSize, 0.45f);
+            weaponBlade.transform.localPosition = new Vector3(0, 3.6f + lerpedWeaponSize, 0);
+
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }
